@@ -51,25 +51,20 @@ const Form = () => {
     themes.forEach((theme) => {
       const div = document.createElement("div");
       div.className = "theme-btn";
-      div.style.cssText = `background: ${theme.background}; width: 25px; height: 25px; margin: 5px; cursor: pointer;`;
+      div.style.cssText = `background: ${theme.background}; width: 30px; height: 25px; margin: 5px; cursor: pointer;`;
       btnContainer.appendChild(div);
       div.addEventListener("click", () => setTheme(theme));
     });
   };
 
   return (
-    <section className="container mx-auto p-4">
-      <div className="login-container relative bg-white rounded-lg shadow-lg p-8">
-        <div className="circle circle-one absolute w-24 h-24 bg-gray-200 rounded-full"></div>
+    <section className="container mx-auto p-8">
+      <div className="login-container relative bg-white rounded-lg shadow-lg p-12">
+        {/* <div className="circle circle-one absolute w-24 h-24 bg-gray-200 rounded-full"></div> */}
         <div className="form-container w-full max-w-md mx-auto">
-          <img
-            src="https://raw.githubusercontent.com/hicodersofficial/glassmorphism-login-form/master/assets/illustration.png"
-            alt="illustration"
-            className="illustration w-full mb-6"
-          />
-          <h1 className="opacity text-2xl font-bold mb-4">LOGIN</h1>
-          <form className="space-y-6">
-            <div className="mb-2">
+          <h1 className="text-xl">Support Form</h1>
+          <form className="space-y-4">
+            <div className="mb-4 h-40 mt-20">
               <label
                 htmlFor="userId"
                 className="block text-white font-bold text-start"
@@ -82,25 +77,17 @@ const Form = () => {
                 min="1"
                 max="100"
                 step="1"
-                className="text-white w-full px-4 py-2 border-4 border-gray-300 rounded"
+                className="text-black w-full px-4 py-2 border-4 border-gray-300 rounded"
               />
             </div>
-            <input
-              type="password"
-              placeholder="PASSWORD"
-              className="text-whitew-full px-4 py-2 border-4 border-gray-300 rounded"
-            />
-            <button className="opacity w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-              SUBMIT
-            </button>
-          </form>
-          <div className="register-forget opacity flex justify-between mt-4">
-            <Link to="/" className="text-blue-500 hover:underline">
-              FORGOT PASSWORD
+
+            <Link>
+              <button className="opacity w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                SUBMIT
+              </button>
             </Link>
-          </div>
+          </form>
         </div>
-        <div className="circle circle-two absolute w-24 h-24 bg-gray-200 rounded-full"></div>
       </div>
       <div className="theme-btn-container flex justify-center mt-8"></div>
     </section>
