@@ -1,14 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const SignUpForm = () => {
+const Form = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    mobile: "",
+  });
+
   useEffect(() => {
-    const form = document.getElementById("form");
     const message = document.getElementById("message");
     const smallMessage = document.getElementById("smallMessage");
     const emailMessage = "Type your email";
     const passwordMessage = "Choose your password";
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
+    const name = document.getElementById("name");
+    const mobile = document.getElementById("mobile");
     const submitBtn = document.getElementById("submit");
 
     function firstMessage() {
@@ -23,70 +27,83 @@ const SignUpForm = () => {
     }
 
     function length() {
-      if (password.value.length <= 3) {
-        smallMessage.innerHTML = "Make it strong";
-      } else if (password.value.length > 3 && password.value.length < 10) {
-        smallMessage.innerHTML = "Strong as a bull!";
-      } else if (password.value.length >= 10) {
-        smallMessage.innerHTML = "It's unbreakable!!!";
+      if (mobile.value.length <= 10) {
+        smallMessage.innerHTML = "Enter a valid mobile number";
       } else {
         smallMessage.innerHTML = "";
       }
     }
 
     function formValidation() {
-      email.addEventListener("input", firstMessage);
-      password.addEventListener("input", secondMessage);
-      password.addEventListener("keyup", length);
+      name.addEventListener("input", firstMessage);
+      mobile.addEventListener("input", secondMessage);
+      mobile.addEventListener("keyup", length);
 
-      submitBtn.addEventListener("mouseover", function (event) {
-        event.preventDefault(); // Example usage of the event parameter
+      submitBtn.addEventListener("mouseover", function () {
         message.innerHTML = "You're a click away";
         smallMessage.innerHTML = "Do it. That's what you are here for.";
         document.body.style.background = "#FCEFA6";
       });
-
-      submitBtn.addEventListener("click", function (event) {
-        event.preventDefault(); // Example usage of the event parameter
-        form.innerHTML =
-          '<h1>Good job!</h1><p class="success-message">There is a confirmation link waiting in your email inbox.</p>';
-        document.body.style.background = "#D7F5DE";
-      });
     }
 
     formValidation();
-  }, []); // Empty dependency array ensures this effect runs only once after initial render
+  }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    fetch("http://localhost:5000/ticket", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+      });
+  };
   return (
     <div className="container">
-      <form autoComplete="off" id="form">
+      <form autoComplete="off" id="form" onSubmit={handleSubmit}>
         <h1 id="message">Get Started</h1>
         <small id="smallMessage"></small>
         <div className="field">
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            id="email"
+            type="text"
+            name="name"
+            placeholder="Name"
+            id="name"
             autoComplete="off"
+            value={formData.name}
+            onChange={handleChange}
           />
-          <label htmlFor="email">Email</label>
+          <label htmlFor="name">Name</label>
         </div>
         <div className="field">
           <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            id="password"
-            autoComplete="new-password"
+            type="tel"
+            name="mobile"
+            placeholder="Mobile No. (e.g., +8801XXXXXXXXX)"
+            id="mobile"
+            autoComplete="off"
+            value={formData.mobile}
+            onChange={handleChange}
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="mobile">Mobile Number</label>
         </div>
-        <button id="submit">Create My Account</button>
+        <button id="submit" type="submit">
+          Submit
+        </button>
         <p>By signing up, I agree to the Terms of Service and Privacy Policy</p>
       </form>
     </div>
   );
 };
 
-export default SignUpForm;
+export default Form;
