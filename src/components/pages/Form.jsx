@@ -44,7 +44,7 @@ const Form = () => {
 
       submitBtn.addEventListener("mouseover", function () {
         message.innerHTML = "Drop Your Name & Number";
-        smallMessage.innerHTML = "Do it. That's what you are here for.";
+        smallMessage.innerHTML = "let us know your problems";
         document.body.style.background = "#FCEFA6";
       });
     }
@@ -58,7 +58,6 @@ const Form = () => {
   };
 
   const generateToken = () => {
-    // Generate a simple token for demonstration purposes
     return Math.random().toString(36).substr(2, 9);
   };
 
@@ -66,11 +65,10 @@ const Form = () => {
     e.preventDefault();
     const newToken = generateToken();
     setToken(newToken);
-    setSubmissionMessage("Form submitted successfully. Your token number is:");
+    setSubmissionMessage("Thank You!  Your token number is:");
 
     const dataToSend = { ...formData, token: newToken };
 
-    // Optionally send form data to the server
     try {
       const response = await fetch("http://localhost:5000/ticket", {
         method: "POST",
@@ -117,16 +115,16 @@ const Form = () => {
           <label htmlFor="mobile">Mobile Number</label>
         </div>
         <button id="submit" type="submit">
+          {submissionMessage && (
+            <div>
+              <p>{submissionMessage}</p>
+              {token && <p>Token Number: {token}</p>}
+            </div>
+          )}
           Submit
         </button>
         <p>By signing up, I agree to the Terms of Service and Privacy Policy</p>
       </form>
-      {submissionMessage && (
-        <div>
-          <p>{submissionMessage}</p>
-          {token && <p>Token Number: {token}</p>}
-        </div>
-      )}
     </div>
   );
 };

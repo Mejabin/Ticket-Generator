@@ -103,16 +103,7 @@ form label {
     opacity: 0;
 }
 
-form input {
-    padding: 10px 20px;
-    border: 4px solid white;
-    margin: 0 1.5rem;
-    background-color: transparent !important;
-    -webkit-appearance: none;
-    /* font-weight: bold; */
-    color: white;
-    /* important to override chrome's yellow background and black text autofill */
-}
+
 
 form input:-webkit-autofill {
     background-color: transparent !important;
