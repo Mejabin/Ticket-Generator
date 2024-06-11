@@ -1,4 +1,28 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const StyledForm = styled.form`
+  .field input {
+    position: relative;
+    display: block;
+    width: 100%;
+    font-size: ${(props) => props.fontSize};
+    line-height: ${(props) => props.fontSize * 2}px;
+    font-family: ${(props) => props.fontFace};
+    margin-bottom: ${(props) => props.fontSize * 2}px;
+    border: none;
+    border-bottom: 5px solid rgba(0, 0, 0, 1);
+    background: transparent;
+    min-width: 250px;
+    padding-left: 5px;
+    outline: none;
+    color: rgba(0, 0, 0, 1);
+  }
+
+  .field input:focus {
+    border-bottom: 5px solid ${(props) => props.formShadow};
+  }
+`;
 
 const Form = () => {
   const [formData, setFormData] = useState({
@@ -57,9 +81,25 @@ const Form = () => {
     const currentTime = new Date().toLocaleString();
     const dataToSend = { ...formData, token: newToken, time: currentTime };
     console.log(dataToSend);
-    // Here you can add your fetch logic
+    try {
+      const response = await fetch(
+        "https://backend-db-five.vercel.app/add-tickets",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(dataToSend),
+        }
+      );
+      console.log(JSON.stringify(dataToSend));
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+      setSubmissionMessage("Error submitting the form. Please try again.");
+    }
   };
-
   return (
     <div
       className="flex items-center justify-center w-screen h-screen"
@@ -69,75 +109,72 @@ const Form = () => {
         backgroundPosition: "center",
       }}
     >
-      <div className="h-80 w-80 border-solid border-2 border-black bg-[#F8F4E5] flex items-center justify-center">
-        <form autoComplete="off" id="form" className="space-y-4 p-4">
-          <h1 className="2xl" id="message">
-            Drop Your Information
-          </h1>
-          <small id="smallMessage"></small>
-          <div className="field space-y-1">
-            <input
-              type="text"
-              name="name"
-              placeholder="Name"
-              id="name"
-              autoComplete="off"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-            <label htmlFor="name" className="block text-sm text-gray-600">
-              Name
-            </label>
-            <small
-              id="nameMessage"
-              className="block text-xs text-gray-500"
-            ></small>
-          </div>
-          <div className="field space-y-1">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              id="email"
-              autoComplete="off"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-            <label htmlFor="email" className="block text-sm text-gray-600">
-              Email
-            </label>
-            <small
-              id="emailMessage"
-              className="block text-xs text-gray-500"
-            ></small>
-          </div>
-          <div className="field space-y-1">
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone (e.g., 123-456-7890)"
-              id="phone"
-              autoComplete="off"
-              pattern="+880********"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-            <label htmlFor="phone" className="block text-sm text-gray-600">
-              Phone
-            </label>
-            <small
-              id="phoneMessage"
-              className="block text-xs text-gray-500"
-            ></small>
-          </div>
-          <button
-            id="submit"
-            type="button"
-            onClick={handleSubmit}
-            className="
+      <div className="static  h-80 w-80 border-solid border-2 border-black bg-[#FFA680] flex items-center justify-center">
+        <div className=" absolute  right-  h-80 w-80 border-solid border-2 border-black bg-[#F8F4E5] flex items-center justify-center">
+          <StyledForm
+            autoComplete="off"
+            id="form"
+            className="space-y-4 p-4"
+            fontSize="16px"
+            fontFace="Arial, sans-serif"
+            formBg="#FFF"
+            formShadow="rgba(0, 0, 0, 0.5)"
+          >
+            <h1 className="text-2xl mb-1.5" id="message">
+              Drop Your Information
+            </h1>
+            <small id="smallMessage"></small>
+            <div className="field space-y-1">
+              <input
+                type="text"
+                name="name"
+                placeholder="Name"
+                id="name"
+                autoComplete="off"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              <small
+                id="nameMessage"
+                className="block text-xs text-gray-500"
+              ></small>
+            </div>
+            <div className="field space-y-1">
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                id="email"
+                autoComplete="off"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              <small
+                id="emailMessage"
+                className="block text-xs text-gray-600"
+              ></small>
+            </div>
+            <div className="field space-y-1">
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone (e.g.,+880********)"
+                id="phone"
+                autoComplete="off"
+                pattern="+880********"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              <small
+                id="phoneMessage"
+                className="block text-xs text-gray-500"
+              ></small>
+            </div>
+            <button
+              id="submit"
+              type="button"
+              onClick={handleSubmit}
+              className="
     block 
     mx-auto 
     p-2 
@@ -153,20 +190,20 @@ const Form = () => {
     hover:bg-black 
     hover:text-white 
     hover:border-black"
-          >
-            Submit
-          </button>
-
-          {submissionMessage && (
-            <div className="mt-4 text-center">
-              <p>{submissionMessage}</p>
-              {token && <p>Token Number: {token}</p>}
-            </div>
-          )}
-          <p className="text-xs text-gray-500">
-            We&apos;ll shortly reach you 
-          </p>
-        </form>
+            >
+              Submit
+            </button>
+            {submissionMessage && (
+              <div className="mt-4 text-center">
+                <p>{submissionMessage}</p>
+                {token && <p>Token Number: {token}</p>}
+              </div>
+            )}
+            <p className="text-xs text-gray-500">
+              We&apos;ll shortly reach you
+            </p>
+          </StyledForm>
+        </div>
       </div>
     </div>
   );

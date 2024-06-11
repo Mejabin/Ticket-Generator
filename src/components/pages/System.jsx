@@ -1,39 +1,44 @@
-import { useEffect, useState } from 'react';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { useEffect, useState } from "react";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const System = () => {
   const [supports, setSupports] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/tickets')
+    fetch("https://backend-db-five.vercel.app/all-tickets")
       .then((res) => {
         if (!res.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return res.json();
       })
       .then((data) => {
-        console.log('Fetched data:', data);
+        console.log("Fetched data:", data);
         setSupports(data);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       });
   }, []);
 
   const handleDownloadPDF = () => {
     try {
       const doc = new jsPDF();
-      doc.text('Tickets', 20, 10);
+      doc.text("Tickets", 20, 10);
       doc.autoTable({
-        head: [['Name', 'Mobile', 'Token', 'Time']],
-        body: supports.map((support) => [support.name, support.mobile, support.token, support.time]),
+        head: [["Name", "Mobile", "Token", "Time"]],
+        body: supports.map((support) => [
+          support.name,
+          support.mobile,
+          support.token,
+          support.time,
+        ]),
         startY: 20,
       });
-      doc.save('tickets.pdf');
+      doc.save("tickets.pdf");
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error("Error generating PDF:", error);
     }
   };
 
