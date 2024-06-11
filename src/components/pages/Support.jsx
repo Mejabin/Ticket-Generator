@@ -1,22 +1,35 @@
 import { useEffect, useState } from "react";
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import {
+  PDFDownloadLink,
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+} from "@react-pdf/renderer";
 
 const Support = () => {
   const [supports, setSupports] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-  
-//get method
+
+  //get method
   useEffect(() => {
     fetch("https://ticket-generator-server.vercel.app/all-supports")
       .then((res) => res.json())
       .then((data) => {
-        setSupports(data.map((support, index) => ({ ...support, serial: index + 1 })));
+        setSupports(
+          data.map((support, index) => ({ ...support, serial: index + 1 }))
+        );
       });
   }, []);
 
   const filterSupportsByDate = () => {
     if (!selectedDate) return supports;
-    return supports.filter((support) => new Date(support.date).toLocaleDateString() === selectedDate.toLocaleDateString());
+    return supports.filter(
+      (support) =>
+        new Date(support.date).toLocaleDateString() ===
+        selectedDate.toLocaleDateString()
+    );
   };
 
   const handleDateChange = (event) => {
@@ -30,20 +43,39 @@ const Support = () => {
           <Text style={styles.title}>Support Panel</Text>
           <View style={styles.table}>
             <View style={styles.tableRow}>
-              <View style={styles.tableCellHeader}><Text>Serial</Text></View>
-              <View style={styles.tableCellHeader}><Text>Date</Text></View>
-              <View style={styles.tableCellHeader}><Text>Category</Text></View>
-              <View style={styles.tableCellHeader}><Text>Number</Text></View>
-              <View style={styles.tableCellHeader}><Text>Token</Text></View>
+              <View style={styles.tableCellHeader}>
+                <Text>Serial</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text>Date</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text>Category</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text>Number</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text>Token</Text>
+              </View>
             </View>
             {filterSupportsByDate().map((support, i) => (
               <View key={i} style={styles.tableRow}>
-                <View style={styles.tableCell}><Text>{support.serial}</Text></View>
-                <View style={styles.tableCell}><Text>{new Date(support.date).toLocaleString()}</Text></View>
-                <View style={styles.tableCell}><Text>{support.category}</Text></View>
-                <View style={styles.tableCell}><Text>{support.mobileNo}</Text></View>
-                <View style={styles.tableCell}><Text>{support.token}</Text></View>
-
+                <View style={styles.tableCell}>
+                  <Text>{support.serial}</Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text>{new Date(support.date).toLocaleString()}</Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text>{support.category}</Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text>{support.mobileNo}</Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text>{support.token}</Text>
+                </View>
               </View>
             ))}
           </View>
@@ -105,7 +137,9 @@ const Support = () => {
               <th className="border px-4 py-2">
                 <input
                   type="date"
-                  value={selectedDate ? selectedDate.toISOString().split("T")[0] : ""}
+                  value={
+                    selectedDate ? selectedDate.toISOString().split("T")[0] : ""
+                  }
                   onChange={handleDateChange}
                   className="border px-2 py-1 w-full"
                 />
@@ -119,7 +153,9 @@ const Support = () => {
             {filterSupportsByDate().map((support, i) => (
               <tr key={i}>
                 <td className="border px-4 py-2">{support.serial}</td>
-                <td className="border px-4 py-2">{new Date(support.date).toLocaleString()}</td>
+                <td className="border px-4 py-2">
+                  {new Date(support.date).toLocaleString()}
+                </td>
                 <td className="border px-4 py-2">{support.category}</td>
                 <td className="border px-4 py-2">{support.mobileNo}</td>
                 <td className="border px-4 py-2">{support.token}</td>
@@ -128,9 +164,15 @@ const Support = () => {
           </tbody>
         </table>
         <div className="mt-8 flex justify-center">
-          <PDFDownloadLink document={<PDFDocument />} fileName="support_data.pdf">
+          <PDFDownloadLink
+            document={<PDFDocument />}
+            fileName="support_data.pdf"
+          >
             {({ blob, url, loading, error }) => (
-              <button className="bg-black text-white px-4 py-2 rounded hover:bg-black" type="button">
+              <button
+                className="bg-black text-white px-4 py-2 rounded hover:bg-black"
+                type="button"
+              >
                 Download
               </button>
             )}
