@@ -43,7 +43,7 @@ const Form = () => {
       if (result.success) {
         // Set the alert message with token at the top of the form
         toast.custom(
-          <div className="flex items-center gap-3 py-4 px-6 shadow-xl rounded-lg shadow-emerald-800/25 text-sm">
+          <div className="flex items-center gap-3 py-4 px-4 shadow-xl rounded-lg shadow-emerald-800/25 text-sm bg-white">
             <span>
               <svg
                 width="24px"
@@ -83,7 +83,7 @@ const Form = () => {
           "There was an error submitting the form. Please try again."
         );
         setToken("");
-        toast.error(`here was an error submitting the form. Please try again.`);
+        toast.error(`Here was an error submitting the form. Please try again.`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -107,13 +107,13 @@ const Form = () => {
   };
 
   return (
-    <section className="container mx-auto p-12  h-screen  overflow-hidden ">
+    <section className="container mx-auto p-12  h-screen  flex items-center justify-center flex-nowrap">
       <Toaster />
-      <div className="mt-32 ">
+      <div className="mt-8">
         <div className="flex items-center justify-center mb-8">
           <img src={logo} className="h-12 " alt="" />
         </div>
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-2xl shadow-emerald-800/45  pt-0">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35  pt-0">
           <div className=" bg-emerald-600 rounded-t-lg">
             <h1 className="text-xl mb-6 py-4 px-10 text-white">
               Support Portal
@@ -132,7 +132,7 @@ const Form = () => {
                   type="text"
                   placeholder="Enter your phone number"
                   name="mobile_no"
-                  className="w-full px-4 py-3 border rounded text-black placeholder:text-sm"
+                  className="w-72 px-4 py-3 border rounded text-black placeholder:text-sm"
                   required
                 />
               </div>
