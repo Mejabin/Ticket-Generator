@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 const Form = () => {
   const [submissionMessage, setSubmissionMessage] = useState("");
   const [token, setToken] = useState("");
+  console.log(submissionMessage);
 
   const handleSupportPost = async (e) => {
     e.preventDefault();
