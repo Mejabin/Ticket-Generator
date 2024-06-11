@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
   background: rgb(238, 241, 250);
   background: linear-gradient(
@@ -37,3 +38,4 @@ body {
   right: -11px;
   background: #f0f3fb;
 }
+
