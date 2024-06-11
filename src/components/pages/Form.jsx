@@ -1,95 +1,128 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-
-const themes = [
-  {
-    background: "#1A1A2E",
-    color: "#FFFFFF",
-    primaryColor: "#0F3460",
-  },
-  {
-    background: "#461220",
-    color: "#FFFFFF",
-    primaryColor: "#E94560",
-  },
-  {
-    background: "#192A51",
-    color: "#FFFFFF",
-    primaryColor: "#967AA1",
-  },
-  {
-    background: "#F7B267",
-    color: "#000000",
-    primaryColor: "#F4845F",
-  },
-  {
-    background: "#F25F5C",
-    color: "#000000",
-    primaryColor: "#642B36",
-  },
-  {
-    background: "#231F20",
-    color: "#FFF",
-    primaryColor: "#BB4430",
-  },
-];
-
-const setTheme = (theme) => {
-  const root = document.querySelector(":root");
-  root.style.setProperty("--background", theme.background);
-  root.style.setProperty("--color", theme.color);
-  root.style.setProperty("--primary-color", theme.primaryColor);
-};
+import { useState } from 'react';
 
 const Form = () => {
-  useEffect(() => {
-    displayThemeButtons();
-  }, []);
+  const [submissionMessage, setSubmissionMessage] = useState('');
+  const [token, setToken] = useState('');
 
-  const displayThemeButtons = () => {
-    const btnContainer = document.querySelector(".theme-btn-container");
-    themes.forEach((theme) => {
-      const div = document.createElement("div");
-      div.className = "theme-btn";
-      div.style.cssText = `background: ${theme.background}; width: 30px; height: 25px; margin: 5px; cursor: pointer;`;
-      btnContainer.appendChild(div);
-      div.addEventListener("click", () => setTheme(theme));
-    });
+  const handleSupportPost = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const mobileNo = form.mobile_no.value;
+    const category = form.category.value;
+    const currentDate = new Date().toISOString();
+    const newToken = generateToken();
+
+console.log(token);
+
+//post method
+    const data = {
+      mobileNo,
+      category,
+      date: currentDate,
+      token: newToken,
+    };
+    try {
+      setToken(newToken);
+
+      const response = await fetch("http://localhost:5000/support-post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Set the alert message with token at the top of the form
+        window.alert(`Thank you! Your data was submitted successfully. Your token number is: ${newToken}`);
+        // Set the token in the state
+        setToken(newToken);
+        // Reset the form
+        form.reset();
+      } else {
+        setSubmissionMessage("There was an error submitting the form. Please try again.");
+        setToken('');
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setSubmissionMessage("There was an error submitting the form. Please try again.");
+      setToken('');
+    }
+  };
+
+  // Function to generate a random token
+  const generateToken = () => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let newToken = "";
+    for (let i = 0; i < 5; i++) {
+      newToken += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return newToken;
   };
 
   return (
-    <section className="container mx-auto p-8">
-      <div className="login-container relative bg-white rounded-lg shadow-lg p-12">
-        {/* <div className="circle circle-one absolute w-24 h-24 bg-gray-200 rounded-full"></div> */}
-        <div className="form-container w-full max-w-md mx-auto">
-          <h1 className="text-xl">Support Form</h1>
-          <form className="space-y-4">
-            <div className="mb-4 h-40 mt-20">
-              <label
-                htmlFor="userId"
-                className="block text-white font-bold text-start"
-              >
-                Your Name
-              </label>
-              <input
-                type="number"
-                placeholder="Please Enter Your Phone Number"
-                min="1"
-                max="100"
-                step="1"
-                className="text-black w-full px-4 py-2 border-4 border-gray-300 rounded"
-              />
-            </div>
-
-            <Link>
-              <button className="opacity w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                SUBMIT
-              </button>
-            </Link>
-          </form>
-        </div>
+    <section className="container mx-auto p-12 mt-20">
+      <div className="max-w-lg mx-auto bg-gray-200 rounded-lg shadow-lg p-12">
+        <h1 className="text-2xl font-bold mb-6 text-center text-black">Support Panel</h1>
+        <form onSubmit={handleSupportPost} className="space-y-6">
+          <div>
+            <label
+              htmlFor="mobile_no"
+              className="block text-black text-xl font-semibold mb-2"
+            >
+              Your Phone Number
+            </label>
+            <input
+              type="text"
+              placeholder="Please Enter Your Phone Number"
+              name="mobile_no"
+              className="w-full px-4 py-2 border rounded text-black"
+              required
+            />
+          </div>
+          <div className="">
+            <label className="block text-black text-xl font-semibold mb-2">
+              Select a category
+            </label>
+            <select
+              className="w-full px-4 py-2 border border-gray-700 rounded text-black"
+              name="category"
+              required
+            >
+              <option value="" disabled selected>
+                Select one
+              </option>
+              <option value="Hardware">Hardware</option>
+              <option value="Software">Software</option>
+            </select>
+          </div>
+          <div className="mt-8">
+            <button
+              className="w-full bg-black text-white px-4 py-2 rounded hover:bg-black"
+              type="submit"
+            >
+              SUBMIT
+            </button>
+          </div>
+        </form>
+        {/* Display token and reset button if token exists */}
+        {token && (
+          <div className="mt-4 text-center">
+            <p>Token Number: {token}</p>
+            <button
+              className="bg-red-900 text-white px-4 py-2 rounded hover:bg-red-900 mt-2"
+              onClick={() => {
+                setToken('');
+                setSubmissionMessage('');
+              }}
+            >
+              OK
+            </button>
+          </div>
+        )}
       </div>
-      <div className="theme-btn-container flex justify-center mt-8"></div>
     </section>
   );
 };
