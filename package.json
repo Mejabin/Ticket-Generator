@@ -13,10 +13,13 @@
     "@react-pdf/renderer": "^3.4.4",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
+    "styled-components": "^6.1.11"
+
+    "firebase": "^10.12.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1",
-    "styled-components": "^6.1.11"
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

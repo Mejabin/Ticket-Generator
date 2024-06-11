@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import RootLayout from "../components/layouts/RootLayout";
-import System from "../components/pages/System";
+
+import Support from "../components/pages/Support";
 
 
 
@@ -15,9 +16,12 @@ const Router = createBrowserRouter([
                 element: <App/>,
             },
             {
-                path: '/system',
-                element: <System/>
+
+                path: '/support',
+                element: <Support/>,
             },
+           
+
         ],
     },
 ]);
