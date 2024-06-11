@@ -10,8 +10,10 @@ const Form = () => {
   const handleSupportPost = async (e) => {
     e.preventDefault();
     const form = e.target;
+    const name = form.name.value;
     const mobileNo = form.mobile_no.value;
     const category = form.category.value;
+    const description = form.description.value;
     const currentDate = new Date().toISOString();
     const newToken = generateToken();
 
@@ -19,8 +21,10 @@ const Form = () => {
 
     //post method
     const data = {
+      name,
       mobileNo,
       category,
+      description,
       date: currentDate,
       token: newToken,
     };
@@ -83,7 +87,9 @@ const Form = () => {
           "There was an error submitting the form. Please try again."
         );
         setToken("");
-        toast.error(`Here was an error submitting the form. Please try again.`);
+        toast.error(
+          `There was an error submitting the form. Please try again.`
+        );
       }
     } catch (error) {
       console.error("Error:", error);
@@ -109,7 +115,7 @@ const Form = () => {
   return (
     <section className="container mx-auto p-12  h-screen  flex items-center justify-center flex-nowrap">
       <Toaster />
-      <div className="mt-8">
+      <div className="sm:mt-8 md:mt-3">
         <div className="flex items-center justify-center mb-8">
           <img src={logo} className="h-12 " alt="" />
         </div>
@@ -123,6 +129,21 @@ const Form = () => {
             <form onSubmit={handleSupportPost} className="space-y-6">
               <div>
                 <label
+                  htmlFor="name"
+                  className="block text-black/50 text-xs uppercase font-bold mb-2"
+                >
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  name="name"
+                  className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="mobile_no"
                   className="block text-black/50 text-xs uppercase font-bold mb-2"
                 >
@@ -132,7 +153,7 @@ const Form = () => {
                   type="text"
                   placeholder="Enter your phone number"
                   name="mobile_no"
-                  className="w-72 px-4 py-3 border rounded text-black placeholder:text-sm"
+                  className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
                   required
                 />
               </div>
@@ -157,6 +178,22 @@ const Form = () => {
                   <option value="Hardware">Hardware</option>
                   <option value="Software">Software</option>
                 </select>
+              </div>
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-black/50 text-xs uppercase font-bold mb-2"
+                >
+                  Description
+                </label>
+
+                <textarea
+                  placeholder="Describe your problem here..."
+                  name="description"
+                  rows="4"
+                  className="w-full px-4 py-3 border rounded text-black placeholder:text-sm"
+                  required
+                />
               </div>
               <div className="mt-8">
                 <button

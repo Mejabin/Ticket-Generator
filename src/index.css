@@ -4,15 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: rgb(238, 241, 250);
-  background: linear-gradient(
-    0deg,
-    rgba(238, 241, 250, 1) 0%,
-    rgba(251, 252, 255, 1) 100%
-  );
-}
-
 .token-dot {
   position: relative;
 }
