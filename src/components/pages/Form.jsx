@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 const Form = () => {
   const [submissionMessage, setSubmissionMessage] = useState("");
   const [token, setToken] = useState("");
-  console.log(submissionMessage);
+  const [selectedFileName, setSelectedFileName] = useState("No file chosen");
 
   const handleSupportPost = async (e) => {
     e.preventDefault();
@@ -14,20 +14,21 @@ const Form = () => {
     const mobileNo = form.mobile_no.value;
     const category = form.category.value;
     const description = form.description.value;
+    const file = form.attachment.files[0];
     const currentDate = new Date().toISOString();
     const newToken = generateToken();
 
-    console.log(token);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("mobileNo", mobileNo);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("date", currentDate);
+    formData.append("token", newToken);
+    if (file) {
+      formData.append("attachment", file);
+    }
 
-    //post method
-    const data = {
-      name,
-      mobileNo,
-      category,
-      description,
-      date: currentDate,
-      token: newToken,
-    };
     try {
       setToken(newToken);
 
@@ -35,19 +36,15 @@ const Form = () => {
         "https://ticket-generator-server.vercel.app/support-post",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
+          body: formData,
         }
       );
 
       const result = await response.json();
 
       if (result.success) {
-        // Set the alert message with token at the top of the form
         toast.custom(
-          <div className="flex items-center gap-3 py-4 px-4 shadow-xl rounded-lg shadow-emerald-800/25 text-sm bg-white">
+          <div className="flex items-center gap-3 py-4 px-4 shadow-xl rounded-xl shadow-emerald-800/25 text-sm bg-white">
             <span>
               <svg
                 width="24px"
@@ -78,10 +75,9 @@ const Form = () => {
           </div>
         );
 
-        // Set the token in the state
         setToken(newToken);
-        // Reset the form
         form.reset();
+        setSelectedFileName("No file chosen");
       } else {
         setSubmissionMessage(
           "There was an error submitting the form. Please try again."
@@ -100,7 +96,6 @@ const Form = () => {
     }
   };
 
-  // Function to generate a random token
   const generateToken = () => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let newToken = "";
@@ -112,15 +107,24 @@ const Form = () => {
     return newToken;
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFileName(file.name);
+    } else {
+      setSelectedFileName("No file chosen");
+    }
+  };
+
   return (
-    <section className="container mx-auto p-12  h-screen  flex items-center justify-center flex-nowrap">
+    <section className="container mx-auto p-12 h-screen flex items-center justify-center flex-nowrap">
       <Toaster />
       <div className="sm:mt-8 md:mt-3">
         <div className="flex items-center justify-center mb-8">
-          <img src={logo} className="h-12 " alt="" />
+          <img src={logo} className="h-12" alt="" />
         </div>
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35  pt-0">
-          <div className=" bg-emerald-600 rounded-t-lg">
+        <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35 pt-0">
+          <div className="bg-emerald-600 rounded-t-lg">
             <h1 className="text-xl mb-6 py-4 px-10 text-white">
               Support Portal
             </h1>
@@ -138,7 +142,7 @@ const Form = () => {
                   type="text"
                   placeholder="Enter your name"
                   name="name"
-                  className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
+                  className="min-w-80 w-full px-4 py-3 border rounded-md text-black placeholder:text-sm"
                   required
                 />
               </div>
@@ -153,7 +157,7 @@ const Form = () => {
                   type="text"
                   placeholder="Enter your phone number"
                   name="mobile_no"
-                  className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
+                  className="min-w-80 w-full px-4 py-3 border rounded-md text-black placeholder:text-sm"
                   required
                 />
               </div>
@@ -162,7 +166,7 @@ const Form = () => {
                   Select a category
                 </label>
                 <select
-                  className="w-full px-4 py-3 border border-gray-200 rounded text-black"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-md text-black"
                   name="category"
                   required
                 >
@@ -186,18 +190,66 @@ const Form = () => {
                 >
                   Description
                 </label>
-
                 <textarea
-                  placeholder="Describe your problem here..."
+                  placeholder="Enter a description"
                   name="description"
+                  className="w-full px-4 py-3 border  text-black placeholder:text-sm rounded-md "
                   rows="4"
-                  className="w-full px-4 py-3 border rounded text-black placeholder:text-sm"
                   required
                 />
               </div>
+              <div className="mt-3">
+                <label
+                  htmlFor="fileInput"
+                  className="block text-black/50 text-xs uppercase font-bold mb-2"
+                >
+                  Attach File
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    name="attachment"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="fileInput"
+                    className="w-full border-2 border-dashed  p-3 input-primary mt-2 cursor-pointer flex items-center gap-2 rounded-md opacity-60 text-sm"
+                  >
+                    <span>
+                      <svg
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                          id="SVGRepo_tracerCarrier"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                          {" "}
+                          <path
+                            d="M20 10.9696L11.9628 18.5497C10.9782 19.4783 9.64274 20 8.25028 20C6.85782 20 5.52239 19.4783 4.53777 18.5497C3.55315 17.6211 3 16.3616 3 15.0483C3 13.7351 3.55315 12.4756 4.53777 11.547L12.575 3.96687C13.2314 3.34779 14.1217 3 15.05 3C15.9783 3 16.8686 3.34779 17.525 3.96687C18.1814 4.58595 18.5502 5.4256 18.5502 6.30111C18.5502 7.17662 18.1814 8.01628 17.525 8.63535L9.47904 16.2154C9.15083 16.525 8.70569 16.6989 8.24154 16.6989C7.77738 16.6989 7.33224 16.525 7.00403 16.2154C6.67583 15.9059 6.49144 15.4861 6.49144 15.0483C6.49144 14.6106 6.67583 14.1907 7.00403 13.8812L14.429 6.88674"
+                            stroke="#000000"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          ></path>{" "}
+                        </g>
+                      </svg>
+                    </span>
+                    <span>{selectedFileName.slice(0, 40)}.</span>
+                  </label>
+                </div>
+              </div>
               <div className="mt-8">
                 <button
-                  className="w-full bg-emerald-600 text-white px-4 py-3 rounded hover:bg-emerald-700 shadow-md shadow-emerald-800/25 font-semibold"
+                  className="w-full bg-emerald-600 text-white px-4 py-3 rounded-md hover:bg-emerald-700 shadow-md shadow-emerald-800/25 font-semibold"
                   type="submit"
                 >
                   Submit
@@ -207,7 +259,6 @@ const Form = () => {
           </div>
         </div>
         <div className="">
-          {/* Display token and reset button if token exists */}
           {token && (
             <div className="mt-14 bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
               <div className="col-span-1 border-e-2 border-dashed token-dot"></div>
@@ -217,7 +268,7 @@ const Form = () => {
                   <p className="text-3xl uppercase font-bold">{token}</p>
                 </div>
                 <button
-                  className=" text-black "
+                  className="text-black"
                   onClick={() => {
                     setToken("");
                     setSubmissionMessage("");
