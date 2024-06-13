@@ -13,7 +13,9 @@ import {
 const Support = () => {
   const [supports, setSupports] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null); 
+  const [filteredSupports, setFilteredSupports] = useState([]); 
+  
   //get method
   useEffect(() => {
     fetch("https://ticket-generator-server.vercel.app/all-supports")
@@ -37,6 +39,21 @@ const Support = () => {
   const handleDateChange = (event) => {
     setSelectedDate(new Date(event.target.value));
   };
+  // Filter supports by selected subcategory
+  const filterSupportsBySubcategory = () => {
+    if (!selectedSubcategory) return supports;
+    return supports.filter(
+      (support) => support.subcategory === selectedSubcategory
+    );
+  };
+   // Handle subcategory click
+   const handleSubcategoryClick = (subcategory) => {
+    setSelectedSubcategory(subcategory);
+    // Filter supports based on selected subcategory
+    setFilteredSupports(
+      supports.filter((support) => support.subcategory === subcategory)
+    );
+  };
 
   const PDFDocument = () => (
     <Document>
@@ -56,6 +73,9 @@ const Support = () => {
               </View>
               <View style={styles.tableCellHeader}>
                 <Text>Category</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text>Subcategory</Text>
               </View>
               <View style={styles.tableCellHeader}>
                 <Text>Name</Text>
@@ -82,6 +102,11 @@ const Support = () => {
                   <Text>{support.category}</Text>
                 </View>
                 <View style={styles.tableCell}>
+                <Text onPress={() => handleSubcategoryClick(support.subcategory)} style={styles.clickable}>
+                  {support?.softwareCategory ? support.softwareCategory: support.hardwareCategory}
+                  </Text>
+                </View>
+                <View style={styles.tableCell}>
                   <Text>{support.name}</Text>
                 </View>
                 <View style={styles.tableCell}>
@@ -98,9 +123,7 @@ const Support = () => {
           </View>
         </View>
         <View style={styles.footer}>
-          <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
-            `${pageNumber} / ${totalPages}`
-          )} fixed />
+          <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} fixe />
         </View>
       </Page>
     </Document>
@@ -174,17 +197,17 @@ const Support = () => {
     }
   });
 
-
   return (
-    <div className="mx-auto p-12 max-w-6xl">
-      <div className="overflow-x-auto">
-        <div className=" bg-emerald-600 rounded-t-lg flex items-center justify-between  px-10">
-          <h1 className="text-xl py-4 text-white">Support Panel</h1>
-          <div className="">
+    <div className="mx-auto p-12 ">
+      <div className="overflow-x-hidden w-full mx-auto">
+        <div className=" bg-emerald-600 rounded-t-lg flex items-center justify-between">
+          <h1 className="text-xl mx-6 py-4 text-white">Support Panel</h1>
+          <div className="mr-8">
             <img src={logo} className="h-6" alt="" />
           </div>
         </div>
-        <table className="table-auto w-full mx-auto border border-emerald-800">
+
+        <table className="table-auto  w-full mx-auto border border-emerald-800">
           <thead className="border">
             <tr>
               <th className="border px-4 py-2">Serial</th>
@@ -199,6 +222,7 @@ const Support = () => {
                 />
               </th>
               <th className="border px-4 py-2">Category</th>
+              <th className="border px-4 py-2">Subcategory</th>
               <th className="border px-4 py-2">Name</th>
               <th className="border px-4 py-2">Number</th>
               <th className="border px-4 py-2">Problem Description</th>
@@ -213,6 +237,10 @@ const Support = () => {
                   {new Date(support.date).toLocaleString()}
                 </td>
                 <td className="border px-4 py-2">{support.category}</td>
+                <td className="border px-4 py-2">
+                {support?.softwareCategory ? support.softwareCategory: support.hardwareCategory}
+                
+                </td>
                 <td className="border px-4 py-2">{support.name}</td>
                 <td className="border px-4 py-2">{support.mobileNo}</td>
                 <td className="border px-4 py-2">{support.description}</td>

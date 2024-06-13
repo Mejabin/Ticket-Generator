@@ -5,40 +5,51 @@ import toast, { Toaster } from "react-hot-toast";
 const Form = () => {
   const [submissionMessage, setSubmissionMessage] = useState("");
   const [token, setToken] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedFileName, setSelectedFileName] = useState("No file chosen");
+  const [selectedHardwareCategories, setSelectedHardwareCategories] = useState([]);
+  const [selectedSoftwareCategories, setSelectedSoftwareCategories] = useState([]);
 
   const handleSupportPost = async (e) => {
     e.preventDefault();
+    const newToken = generateToken();
     const form = e.target;
     const name = form.name.value;
     const mobileNo = form.mobile_no.value;
     const category = form.category.value;
+    const hardwareCategory = selectedHardwareCategories.join(', ');
+    const softwareCategory = selectedSoftwareCategories.join(', ');
     const description = form.description.value;
     const file = form.attachment.files[0];
     const currentDate = new Date().toISOString();
-    const newToken = generateToken();
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("mobileNo", mobileNo);
-    formData.append("category", category);
-    formData.append("description", description);
-    formData.append("date", currentDate);
-    formData.append("token", newToken);
-    if (file) {
-      formData.append("attachment", file);
-    }
-
+    const formData = {
+      name,
+      mobileNo,
+      category,
+      hardwareCategory,
+      softwareCategory,
+      description,
+      date: currentDate,
+      attachment: file ? file : " ",
+      token: newToken
+    };
+    console.log({ formData });
     try {
-      setToken(newToken);
-
       const response = await fetch(
         "https://ticket-generator-server.vercel.app/support-post",
         {
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         }
       );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
 
       const result = await response.json();
 
@@ -52,24 +63,7 @@ const Form = () => {
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></g>
-                <g id="SVGRepo_iconCarrier">
-                
-                  <rect width="24" height="24" fill="white"></rect>{" "}
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M7.25007 2.38782C8.54878 2.0992 10.1243 2 12 2C13.8757 2 15.4512 2.0992 16.7499 2.38782C18.06 2.67897 19.1488 3.176 19.9864 4.01358C20.824 4.85116 21.321 5.94002 21.6122 7.25007C21.9008 8.54878 22 10.1243 22 12C22 13.8757 21.9008 15.4512 21.6122 16.7499C21.321 18.06 20.824 19.1488 19.9864 19.9864C19.1488 20.824 18.06 21.321 16.7499 21.6122C15.4512 21.9008 13.8757 22 12 22C10.1243 22 8.54878 21.9008 7.25007 21.6122C5.94002 21.321 4.85116 20.824 4.01358 19.9864C3.176 19.1488 2.67897 18.06 2.38782 16.7499C2.0992 15.4512 2 13.8757 2 12C2 10.1243 2.0992 8.54878 2.38782 7.25007C2.67897 5.94002 3.176 4.85116 4.01358 4.01358C4.85116 3.176 5.94002 2.67897 7.25007 2.38782ZM15.7071 9.29289C16.0976 9.68342 16.0976 10.3166 15.7071 10.7071L12.0243 14.3899C11.4586 14.9556 10.5414 14.9556 9.97568 14.3899L11 13.3656L9.97568 14.3899L8.29289 12.7071C7.90237 12.3166 7.90237 11.6834 8.29289 11.2929C8.68342 10.9024 9.31658 10.9024 9.70711 11.2929L11 12.5858L14.2929 9.29289C14.6834 8.90237 15.3166 8.90237 15.7071 9.29289Z"
-                    fill="#059669"
-                  ></path>
-                </g>
-              </svg>
+              ></svg>
             </span>
             <p className="">{`Thank you! Your data was submitted successfully. Your token number is: ${newToken}`}</p>
           </div>
@@ -82,7 +76,6 @@ const Form = () => {
         setSubmissionMessage(
           "There was an error submitting the form. Please try again."
         );
-        setToken("");
         toast.error(
           `There was an error submitting the form. Please try again.`
         );
@@ -92,9 +85,32 @@ const Form = () => {
       setSubmissionMessage(
         "There was an error submitting the form. Please try again."
       );
-      setToken("");
     }
   };
+
+  const hardwareOptions = [
+    'Fire Safety and Fire Protection Solutions',
+    'CCTV Surveillance Systems',
+    'Time Attendance Systems',
+    'Burglar Alarm System',
+    'Car Parking Management System',
+    'Baggage Scanner',
+    'Archway Gate and Metal Detector',
+    'Car GPS Tracking System',
+    'IP-Based Intercom & PABX Systems',
+    'Face Recognition CCTV Solution',
+    'Home Automation Solution',
+    'Networking Solutions',
+    'Conference System',
+    'Guarding Beyond Boundaries',
+    'Solar System',
+  ];
+
+  const softwareOptions = [
+    'NEDUBD',
+    'BProfile',
+    'BAMS',
+  ];
 
   const generateToken = () => {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -113,6 +129,30 @@ const Form = () => {
       setSelectedFileName(file.name);
     } else {
       setSelectedFileName("No file chosen");
+    }
+  };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setSelectedHardwareCategories([]); // Clear selected hardware categories on category change
+    setSelectedSoftwareCategories([]); // Clear selected software categories on category change
+  };
+
+  const handleHardwareCategoryChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedHardwareCategories([...selectedHardwareCategories, value]);
+    } else {
+      setSelectedHardwareCategories(selectedHardwareCategories.filter((item) => item !== value));
+    }
+  };
+
+  const handleSoftwareCategoryChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedSoftwareCategories([...selectedSoftwareCategories, value]);
+    } else {
+      setSelectedSoftwareCategories(selectedSoftwareCategories.filter((item) => item !== value));
     }
   };
 
@@ -169,10 +209,11 @@ const Form = () => {
                   className="w-full px-4 py-3 border border-gray-200 rounded-md text-black"
                   name="category"
                   required
+                  onChange={handleCategoryChange}
                 >
                   <option
                     className="text-xs opacity-45"
-                    defaultValue=""
+                    value=""
                     disabled
                     selected
                     style={{ color: "rgba(0, 0, 0, 0.45)" }}
@@ -182,6 +223,49 @@ const Form = () => {
                   <option value="Hardware">Hardware</option>
                   <option value="Software">Software</option>
                 </select>
+
+                {selectedCategory === "Hardware" && (
+                  <div className="mt-4">
+                    <label className="block text-black/50 text-xs uppercase font-bold mb-2">
+                      Hardware Category
+                    </label>
+                    {hardwareOptions.map((option) => (
+                      <div key={option}>
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={selectedHardwareCategories.includes(option)}
+                            onChange={handleHardwareCategoryChange}
+                            className="mr-2"
+                          />
+                          {option}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedCategory === "Software" && (
+                  <div className="mt-4">
+                    <label className="block text-black/50 text-xs uppercase font-bold mb-2">
+                      Software Category
+                    </label>
+                    {softwareOptions.map((option) => (
+                      <div key={option}>
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={selectedSoftwareCategories.includes(option)}
+                            onChange={handleSoftwareCategoryChange}
+                            className="mr-2"
+                          />
+                          {option}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <div>
                 <label
@@ -232,14 +316,13 @@ const Form = () => {
                           strokeLinejoin="round"
                         ></g>
                         <g id="SVGRepo_iconCarrier">
-                          {" "}
                           <path
                             d="M20 10.9696L11.9628 18.5497C10.9782 19.4783 9.64274 20 8.25028 20C6.85782 20 5.52239 19.4783 4.53777 18.5497C3.55315 17.6211 3 16.3616 3 15.0483C3 13.7351 3.55315 12.4756 4.53777 11.547L12.575 3.96687C13.2314 3.34779 14.1217 3 15.05 3C15.9783 3 16.8686 3.34779 17.525 3.96687C18.1814 4.58595 18.5502 5.4256 18.5502 6.30111C18.5502 7.17662 18.1814 8.01628 17.525 8.63535L9.47904 16.2154C9.15083 16.525 8.70569 16.6989 8.24154 16.6989C7.77738 16.6989 7.33224 16.525 7.00403 16.2154C6.67583 15.9059 6.49144 15.4861 6.49144 15.0483C6.49144 14.6106 6.67583 14.1907 7.00403 13.8812L14.429 6.88674"
                             stroke="#000000"
                             strokeWidth="1.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                          ></path>{" "}
+                          ></path>
                         </g>
                       </svg>
                     </span>
@@ -289,17 +372,10 @@ const Form = () => {
                         strokeLinejoin="round"
                       ></g>
                       <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <rect
-                          x="0"
-                          fill="none"
-                          width="24"
-                          height="24"
-                        ></rect>{" "}
+                        <rect x="0" fill="none" width="24" height="24"></rect>
                         <g>
-                          {" "}
-                          <path d="M18.36 19.78L12 13.41l-6.36 6.37-1.42-1.42L10.59 12 4.22 5.64l1.42-1.42L12 10.59l6.36-6.36 1.41 1.41L13.41 12l6.36 6.36z"></path>{" "}
-                        </g>{" "}
+                          <path d="M18.36 19.78L12 13.41l-6.36 6.37-1.42-1.42L10.59 12 4.22 5.64l1.42-1.42L12 10.59l6.36-6.36 1.41 1.41L13.41 12l6.36 6.36z"></path>
+                        </g>
                       </g>
                     </svg>
                   </span>
