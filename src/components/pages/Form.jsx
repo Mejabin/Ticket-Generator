@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logo from "../../assets/BAITS-02.png";
 import toast, { Toaster } from "react-hot-toast";
+import Hardware from "./Hardware";
 
 const Form = () => {
   const [submissionMessage, setSubmissionMessage] = useState("");
@@ -30,7 +31,7 @@ const Form = () => {
     };
     try {
       setToken(newToken);
-
+      // data post
       const response = await fetch(
         "https://ticket-generator-server.vercel.app/support-post",
         {
@@ -111,6 +112,11 @@ const Form = () => {
     }
     return newToken;
   };
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
 
   return (
     <section className="container mx-auto p-12  h-screen  flex items-center justify-center flex-nowrap">
@@ -119,144 +125,124 @@ const Form = () => {
         <div className="flex items-center justify-center mb-8">
           <img src={logo} className="h-12 " alt="" />
         </div>
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35  pt-0">
-          <div className=" bg-emerald-600 rounded-t-lg">
-            <h1 className="text-xl mb-6 py-4 px-10 text-white">
-              Support Portal
-            </h1>
-          </div>
-          <div className="px-8 py-10 pt-4">
-            <form onSubmit={handleSupportPost} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-black/50 text-xs uppercase font-bold mb-2"
-                >
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  name="name"
-                  className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="mobile_no"
-                  className="block text-black/50 text-xs uppercase font-bold mb-2"
-                >
-                  Your Phone Number
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter your phone number"
-                  name="mobile_no"
-                  className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
-                  required
-                />
-              </div>
-              <div className="">
-                <label className="block text-black/50 text-xs uppercase font-bold mb-2">
-                  Select a category
-                </label>
-                <select
-                  className="w-full px-4 py-3 border border-gray-200 rounded text-black"
-                  name="category"
-                  required
-                >
-                  <option
-                    className="text-xs opacity-45"
-                    defaultValue=""
-                    disabled
-                    selected
-                    style={{ color: "rgba(0, 0, 0, 0.45)" }}
-                  >
-                    Select one
-                  </option>
-                  <option value="Hardware">Hardware</option>
-                  <option value="Software">Software</option>
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-black/50 text-xs uppercase font-bold mb-2"
-                >
-                  Description
-                </label>
-
-                <textarea
-                  placeholder="Describe your problem here..."
-                  name="description"
-                  rows="4"
-                  className="w-full px-4 py-3 border rounded text-black placeholder:text-sm"
-                  required
-                />
-              </div>
-              <div className="mt-8">
-                <button
-                  className="w-full bg-emerald-600 text-white px-4 py-3 rounded hover:bg-emerald-700 shadow-md shadow-emerald-800/25 font-semibold"
-                  type="submit"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div className="">
-          {/* Display token and reset button if token exists */}
-          {token && (
-            <div className="mt-14 bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
-              <div className="col-span-1 border-e-2 border-dashed token-dot"></div>
-              <div className="col-span-7 px-4 ps-8 py-4 flex items-center justify-between">
-                <div className="">
-                  <p className="text-xs opacity-60">Your Token Number: </p>
-                  <p className="text-3xl uppercase font-bold">{token}</p>
-                </div>
-                <button
-                  className=" text-black "
-                  onClick={() => {
-                    setToken("");
-                    setSubmissionMessage("");
-                  }}
-                >
-                  <span>
-                    <svg
-                      width="24px"
-                      height="24px"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="#000000"
-                    >
-                      <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                      <g
-                        id="SVGRepo_tracerCarrier"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      ></g>
-                      <g id="SVGRepo_iconCarrier">
-                        {" "}
-                        <rect
-                          x="0"
-                          fill="none"
-                          width="24"
-                          height="24"
-                        ></rect>{" "}
-                        <g>
-                          {" "}
-                          <path d="M18.36 19.78L12 13.41l-6.36 6.37-1.42-1.42L10.59 12 4.22 5.64l1.42-1.42L12 10.59l6.36-6.36 1.41 1.41L13.41 12l6.36 6.36z"></path>{" "}
-                        </g>{" "}
-                      </g>
-                    </svg>
-                  </span>
-                </button>
-              </div>
+        {/* icons for Hardware */}
+        <div className="relative">
+          <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35  pt-0">
+            <div className=" bg-emerald-600 rounded-t-lg">
+              <h1 className="text-xl mb-6 py-4 px-10 text-white">
+                Support Portal
+              </h1>
             </div>
-          )}
+            <div className="px-8 py-10 pt-4">
+              <form onSubmit={handleSupportPost} className="space-y-6">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-black/50 text-xs uppercase font-bold mb-2"
+                  >
+                    Your Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter your name"
+                    name="name"
+                    className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="mobile_no"
+                    className="block text-black/50 text-xs uppercase font-bold mb-2"
+                  >
+                    Your Phone Number
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter your phone number"
+                    name="mobile_no"
+                    className="w-80 px-4 py-3 border rounded text-black placeholder:text-sm"
+                    required
+                  />
+                </div>
+                <div className="">
+                  <label className="block text-black/50 text-xs uppercase font-bold mb-2">
+                    Select a category
+                  </label>
+                  <select
+                    className="w-full px-4 py-3 border border-gray-200 rounded text-black"
+                    name="category"
+                    value={selectedCategory}
+                    onChange={handleCategoryChange}
+                    required
+                  >
+                    <option
+                      className="text-xs opacity-45"
+                      value=""
+                      disabled
+                      style={{ color: "rgba(0, 0, 0, 0.45)" }}
+                    >
+                      Select one
+                    </option>
+                    <option value="Hardware">Hardware</option>
+                    <option value="Software">Software</option>
+                  </select>
+
+                  {/* Display Hardware component if "Hardware" is selected */}
+                  {selectedCategory === "Hardware" && <Hardware />}
+                </div>
+                <div>
+                  <label
+                    htmlFor="description"
+                    className="block text-black/50 text-xs uppercase font-bold mb-2"
+                  >
+                    Description
+                  </label>
+
+                  <textarea
+                    placeholder="Describe your problem here..."
+                    name="description"
+                    rows="4"
+                    className="w-full px-4 py-3 border rounded text-black placeholder:text-sm"
+                    required
+                  />
+                </div>
+                <div className="mt-8">
+                  <button
+                    className="w-full bg-emerald-600 text-white px-4 py-3 rounded hover:bg-emerald-700 shadow-md shadow-emerald-800/25 font-semibold"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          
+         
         </div>
+      </div>
+      <div className="">
+        {/* Display token and reset button if token exists */}
+        {token && (
+          <div className="mt-14 bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
+            <div className="col-span-1 border-e-2 border-dashed token-dot"></div>
+            <div className="col-span-7 px-4 ps-8 py-4 flex items-center justify-between">
+              <div className="">
+                <p className="text-xs opacity-60">Your Token Number: </p>
+                <p className="text-3xl uppercase font-bold">{token}</p>
+              </div>
+              <button
+                className=" text-black "
+                onClick={() => {
+                  setToken("");
+                  setSubmissionMessage("");
+                }}
+              ></button>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
