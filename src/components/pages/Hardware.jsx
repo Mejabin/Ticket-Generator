@@ -1,14 +1,22 @@
+import { motion } from "framer-motion";
+import th from "./../../assets/th.jpeg"
 const Hardware = () => {
   return (
     <div>
-      <span className="absolute -left-14 top-80">
+      <motion.span
+        className="absolute opacity-25 -z-10 -left-16 bottom-40"
+        initial={{ x: 60 }}
+        animate={{ x: -10 }}
+        transition={{ duration: 2 }}
+      >
         <svg
+        className="opacity-45 -rotate-12 w-36"
           version="1.1"
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
-          width="64px"
-          height="64px"
+          width="100px"
+          height="100px"
           viewBox="0 0 24 32"
           enableBackground="new 0 0 24 32"
           xmlSpace="preserve"
@@ -43,17 +51,23 @@ const Hardware = () => {
             </g>{" "}
           </g>
         </svg>
-      </span>
-      <span className="absolute -left-16 top-40">
+      </motion.span>
+
+      <motion.span
+        className="absolute  opacity-25 -z-30 -left-20 bottom-[19rem] "
+        initial={{ x: 40 }}
+        animate={{ x: -10 }}
+        transition={{ duration: 1 }}
+      >
         <svg
-          width="64px"
-          height="64px"
+          width="100px"
+          height="200px"
           viewBox="0 0 64 64"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
           aria-hidden="true"
           role="img"
-          class="iconify iconify--emojione-monotone"
+          className="iconify iconify--emojione-monotone rotate-45"
           preserveAspectRatio="xMidYMid meet"
           fill="#000000"
         >
@@ -70,12 +84,17 @@ const Hardware = () => {
             ></path>
           </g>
         </svg>
-      </span>
-      <span className="absolute -left-20 top-20">
-        <svg
+      </motion.span>
+      <motion.span
+        className="absolute -rotate-12 opacity-25 -z-20 -left-20 top-24"
+        initial={{ x: 60 }}
+        animate={{ x: -10 }}
+        transition={{ duration: 0.6 }}
+      >
+        <svg className="opacity-45 w-36 -rotate-45"
           fill="#000000"
-          width="64px"
-          height="64px"
+          width="100px"
+          height="100px"
           viewBox="0 0 32 32"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -90,12 +109,16 @@ const Hardware = () => {
             <path d="M7.7 4.7C9.36 3.07 12.68 2 16.17 2S23 3.06 24.6 4.7A1 1 0 0 0 26 3.3C23.6.86 19.34 0 16.16 0S8.72.87 6.3 3.3a1 1 0 0 0 1.4 1.4zM29.2 12.55C26.38 6.88 22 4 16.17 4s-10.22 2.88-13 8.55a1 1 0 0 0 .44 1.34 1 1 0 0 0 1.35-.45C7.4 8.45 11.08 6 16.15 6s8.77 2.44 11.27 7.45a1 1 0 0 0 .9.55.87.87 0 0 0 .44-.1 1 1 0 0 0 .45-1.35zM19.4 28.08c-4.13-1.77-5.8-4.5-6-6.5a2.87 2.87 0 0 1 1.13-2.75c.85-.57 2.1.24 3.87 1.52s4.13 3 6.17 1.45c1.8-1.35 2.34-3.76 1.45-6.44A10.85 10.85 0 0 0 16.16 8C7.2 8 4 15.75 4 23a1 1 0 0 0 2 0c0-3 .73-13 10.16-13 3.9 0 7 3.1 8 6 .3.87.8 3-.75 4.2-.8.6-2-.2-3.8-1.47s-4.07-2.94-6.14-1.56a4.87 4.87 0 0 0-2 4.6c.24 2.56 2.24 6 7.18 8.15A1 1 0 0 0 19 30a1 1 0 0 0 .4-1.92zM10 19.24a7.06 7.06 0 0 1 5.2-4.65c2.24-.43 4.32.6 6 3a1 1 0 1 0 1.62-1.17c-2.9-4.07-6.27-4.12-8-3.8A9.1 9.1 0 0 0 8 18.77c-1 3.94.43 8.27 4.2 12.87a1 1 0 0 0 .8.37.94.94 0 0 0 .63-.23 1 1 0 0 0 .14-1.4c-3.34-4.1-4.62-7.83-3.77-11.13zM25.3 24.3a3 3 0 0 1-3.06.63c-2.4-.57-4.78-2.7-5.3-4.25a1 1 0 1 0-1.9.64c.8 2.33 3.87 4.88 6.74 5.56a6.84 6.84 0 0 0 1.52.18 4.7 4.7 0 0 0 3.4-1.35 1 1 0 0 0-1.4-1.4z"></path>{" "}
           </g>
         </svg>
-      </span>
-      <span className="absolute -right-20 bottom-20">
-        <svg
+      </motion.span>
+      <motion.span
+        className="absolute rotate-12 -z-10 opacity-25 -right-0 bottom-20"
+        animate={{ x: 100 }}
+        transition={{ ease: "easeOut", duration: 2 }}
+      >
+        <svg className="opacity-45 w-14 rotate-45"
           fill="#000000"
-          height="64px"
-          width="64px"
+          height="200px"
+          width="200px"
           version="1.1"
           id="Layer_1"
           xmlns="http://www.w3.org/2000/svg"
@@ -127,11 +150,16 @@ const Hardware = () => {
             </g>{" "}
           </g>
         </svg>
-      </span>
-      <span className="absolute -right-16 bottom-60">
-        <svg
-          width="64px"
-          height="64px"
+      </motion.span>
+      <motion.span
+        className="absolute -z-10  opacity-25 -right-16 bottom-60"
+        initial={{ x: -60 }}
+        animate={{ x: 10 }}
+        transition={{ ease: "easeIn", duration: 5 }}
+      >
+        <svg className="opacity-45  rotate-45 w-16"
+          width="200px"
+          height="200px"
           viewBox="-14 0 66 66"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -203,11 +231,16 @@ const Hardware = () => {
             </g>{" "}
           </g>
         </svg>
-      </span>
-      <span className="absolute -right-14 bottom-40">
-        <svg
-          width="64px"
-          height="64px"
+      </motion.span>
+      <motion.span
+        className="absolute opacity-25 -z-10 -right-24 top-20"
+        initial={{ x: -60 }}
+        animate={{ x: 10 }}
+        transition={{ ease: "easeIn", duration: 2 }}
+      >
+        <svg className="opacity-45 rotate-45"
+          width="200px"
+          height="200px"
           viewBox="-14 0 66 66"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
@@ -279,7 +312,108 @@ const Hardware = () => {
             </g>{" "}
           </g>
         </svg>
-      </span>
+      </motion.span>
+      <motion.span
+        className="absolute opacity-25 -z-10 right-4 top-60"
+        initial={{ x: -60 }}
+        animate={{ x: 10 }}
+        transition={{ ease: "easeIn", duration: 2 }}
+      >
+        <svg
+          width="100px"
+          height="100px"
+          viewBox="0 0 64 64"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+          fill="#000000"
+        >
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          ></g>
+          <g id="SVGRepo_iconCarrier">
+            <title>Baggage Scanner</title>
+            <desc>Created with Sketch.</desc>
+            <defs></defs>
+            <g
+              id="Page-1"
+              stroke="none"
+              strokeWidth="1"
+              fill="none"
+              fillRule="evenodd"
+              sketch:type="MSPage"
+            >
+              <g
+                id="Baggage-Scanner"
+                sketch:type="MSLayerGroup"
+                transform="translate(1.000000, 1.000000)"
+                strokeWidth="2"
+                stroke="#757575"
+              >
+                <g id="Group" sketch:type="MSShapeGroup">
+                  <rect
+                    x="10"
+                    y="12"
+                    width="40"
+                    height="40"
+                    rx="2"
+                    fill="#D3D3D3"
+                    stroke="#757575"
+                  ></rect>
+                  <path
+                    d="M20,6 L20,12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                  <path
+                    d="M44,6 L44,12"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                  <circle
+                    cx="32"
+                    cy="38"
+                    r="8"
+                    fill="#FFFFFF"
+                    stroke="#757575"
+                  ></circle>
+                  <path
+                    d="M32,32 L32,38 L36,38"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                  <path
+                    d="M10,24 L50,24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                  <path
+                    d="M20,44 L24,44"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                  <path
+                    d="M40,44 L44,44"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+      </motion.span>
+      <motion.span
+        className="absolute h-14 w-14 opacity-25 -z-10 -right-10  bottom-56"
+        animate={{ x: 100}}
+        transition={{ ease: "easeOut", duration: 2  }}
+      >
+        <img src={ th} alt="Node.js" />
+      </motion.span>
     </div>
   );
 };

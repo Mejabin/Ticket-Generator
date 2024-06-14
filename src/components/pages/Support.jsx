@@ -7,6 +7,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Image,
 } from "@react-pdf/renderer";
 
 const Support = () => {
@@ -39,9 +40,12 @@ const Support = () => {
 
   const PDFDocument = () => (
     <Document>
-      <Page size="A4">
-        <View style={styles.page}>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.header}>
+          <Image src={logo} style={styles.logo} />
           <Text style={styles.title}>Support Panel</Text>
+        </View>
+        <View style={styles.content}>
           <View style={styles.table}>
             <View style={styles.tableRow}>
               <View style={styles.tableCellHeader}>
@@ -54,7 +58,13 @@ const Support = () => {
                 <Text>Category</Text>
               </View>
               <View style={styles.tableCellHeader}>
+                <Text>Name</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
                 <Text>Number</Text>
+              </View>
+              <View style={styles.tableCellHeader}>
+                <Text>Problem Description</Text>
               </View>
               <View style={styles.tableCellHeader}>
                 <Text>Token</Text>
@@ -72,7 +82,13 @@ const Support = () => {
                   <Text>{support.category}</Text>
                 </View>
                 <View style={styles.tableCell}>
+                  <Text>{support.name}</Text>
+                </View>
+                <View style={styles.tableCell}>
                   <Text>{support.mobileNo}</Text>
+                </View>
+                <View style={styles.tableCell}>
+                  <Text>{support.description}</Text>
                 </View>
                 <View style={styles.tableCell}>
                   <Text>{support.token}</Text>
@@ -81,19 +97,39 @@ const Support = () => {
             ))}
           </View>
         </View>
+        <View style={styles.footer}>
+          <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
+            `${pageNumber} / ${totalPages}`
+          )} fixed />
+        </View>
       </Page>
     </Document>
   );
 
   const styles = StyleSheet.create({
     page: {
-      flexDirection: "column",
-      padding: 50,
+      paddingTop: 50,
+      paddingBottom: 40,
+     paddingHorizontal : 40  
+     
+    },
+    header: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 0,
+      backgroundColor: "#059669",
+      padding: 20,
     },
     title: {
-      fontSize: 12,
-      marginBottom: 20,
-      textAlign: "center",
+      fontSize: 10,
+      color: "white",
+    },
+    logo: {
+      width: 80,
+      height: 12,
+    },
+    content: {
+      margin: 0.5,
     },
     table: {
       display: "table",
@@ -101,7 +137,7 @@ const Support = () => {
       borderStyle: "solid",
       borderWidth: 0.4,
       borderColor: "#000",
-      marginBottom: 20,
+      marginTop: 0,
     },
     tableRow: {
       flexDirection: "row",
@@ -110,7 +146,7 @@ const Support = () => {
     },
     tableCellHeader: {
       flex: 1,
-      padding: 4,
+      padding: 2,
       borderStyle: "solid",
       borderWidth: 0.4,
       borderColor: "#000",
@@ -119,13 +155,25 @@ const Support = () => {
     },
     tableCell: {
       flex: 1,
-      padding: 4,
+      padding: 2,
       borderStyle: "solid",
       borderWidth: 0.4,
       borderColor: "#000",
       fontSize: 8,
     },
+    footer: {
+      position: 'absolute',
+      bottom: 30,
+      left: 0,
+      right: 0,
+      textAlign: 'center',
+      fontSize: 12,
+    },
+    pageNumber: {
+      fontWeight: 'bold',
+    }
   });
+
 
   return (
     <div className="mx-auto p-12 max-w-6xl">
@@ -151,7 +199,9 @@ const Support = () => {
                 />
               </th>
               <th className="border px-4 py-2">Category</th>
+              <th className="border px-4 py-2">Name</th>
               <th className="border px-4 py-2">Number</th>
+              <th className="border px-4 py-2">Problem Description</th>
               <th className="border px-4 py-2">Token</th>
             </tr>
           </thead>
@@ -163,7 +213,9 @@ const Support = () => {
                   {new Date(support.date).toLocaleString()}
                 </td>
                 <td className="border px-4 py-2">{support.category}</td>
+                <td className="border px-4 py-2">{support.name}</td>
                 <td className="border px-4 py-2">{support.mobileNo}</td>
+                <td className="border px-4 py-2">{support.description}</td>
                 <td className="border px-4 py-2">{support.token}</td>
               </tr>
             ))}
