@@ -17,7 +17,7 @@ export const Software = () => {
   return (
     <div className="">
       <motion.span
-        className="absolute opacity-25 -z-10 -left-48 bottom-40 "
+        className="absolute opacity-25 -z-10 -left-8 bottom-40 "
         animate={{ x: -60 }}
         transition={{ ease: "easeOut", duration: 2 }}
       >
@@ -35,7 +35,11 @@ export const Software = () => {
         animate={{ x: -70 }}
         transition={{ ease: "easeOut", duration: 2 }}
       >
-        <img className="opacity-45  rotate-12 w-16" src={wordpress} alt="Node.js" />
+        <img
+          className="opacity-45  rotate-12 w-16"
+          src={wordpress}
+          alt="Node.js"
+        />
       </motion.span>
       <motion.span
         className="absolute opacity-25 -z-10 -left-6 bottom-72"
@@ -50,7 +54,11 @@ export const Software = () => {
         animate={{ x: 0 }}
         transition={{ duration: 1 }}
       >
-        <img className="opacity-45 -rotate-12 w-20" src={javascript} alt="JavaScript" />
+        <img
+          className="opacity-45 -rotate-12 w-20"
+          src={javascript}
+          alt="JavaScript"
+        />
       </motion.span>
       <motion.span
         className="absolute opacity-25 -z-10 -left-14 bottom-24"
@@ -123,7 +131,11 @@ export const Software = () => {
         animate={{ x: 60 }}
         transition={{ ease: "easeOut", duration: 2 }}
       >
-        <img className="opacity-45 rotate-12 w-20" src={typescript} alt="Node.js" />
+        <img
+          className="opacity-45 rotate-12 w-20"
+          src={typescript}
+          alt="Node.js"
+        />
       </motion.span>
     </div>
   );
