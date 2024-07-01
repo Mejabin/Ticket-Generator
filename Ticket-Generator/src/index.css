@@ -1,0 +1,30 @@
+/* @import url('https://fonts.googleapis.com/css?family=Raleway:400,700'); */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.token-dot {
+  position: relative;
+}
+
+.token-dot::after {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  top: -10px;
+  right: -11px;
+  background: #ebeff6;
+}
+.token-dot::before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  border-radius: 100%;
+  bottom: -10px;
+  right: -11px;
+  background: #f0f3fb;
+}
