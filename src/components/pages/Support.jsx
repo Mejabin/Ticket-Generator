@@ -15,6 +15,9 @@ const Support = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const [filteredSupports, setFilteredSupports] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const supportsPerPage = 15;
+  
 
   // Get method
   useEffect(() => {
@@ -67,8 +70,19 @@ const Support = () => {
         setSupports(supports.filter((support) => support._id !== id));
       });
   };
+  // Pagination logic
+  const indexOfLastSupport = currentPage * supportsPerPage;
+  const indexOfFirstSupport = indexOfLastSupport - supportsPerPage;
+  const currentSupports = filterSupportsByDate().slice(
+    indexOfFirstSupport,
+    indexOfLastSupport
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
 
   const PDFDocument = () => (
+    
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
@@ -136,7 +150,7 @@ const Support = () => {
                 <View style={styles.tableCell}>
                   <Text>{support.token}</Text>
                 </View>
-                
+               
               </View>
             ))}
           </View>
@@ -253,7 +267,7 @@ const Support = () => {
             </tr>
           </thead>
           <tbody className="rounded-b-lg">
-            {filterSupportsByDate().map((support, i) => (
+          {currentSupports.map((support, i) => (
               <tr key={i}>
                 <td className="border px-4 py-2">{support.serial}</td>
                 <td className="border px-4 py-2">
@@ -281,6 +295,14 @@ const Support = () => {
             ))}
           </tbody>
         </table>
+         {/* Pagination */}
+         <div className="flex justify-center mt-4">
+          {Array.from({ length: Math.ceil(filterSupportsByDate().length / supportsPerPage) }, (_, i) => (
+            <button key={i} onClick={() => paginate(i + 1)} className="mx-1 px-3 py-1 bg-emerald-600 text-white rounded">
+              {i + 1}
+            </button>
+          ))}
+          </div>
       </div>
       <div className="flex justify-end mt-4">
         <PDFDownloadLink document={<PDFDocument />} fileName="support_panel.pdf">
