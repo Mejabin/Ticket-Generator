@@ -8,7 +8,6 @@ const Form = () => {
   const [submissionMessage, setSubmissionMessage] = useState("");
   const [token, setToken] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedFileName, setSelectedFileName] = useState("No file chosen");
   const [selectedHardwareCategories, setSelectedHardwareCategories] = useState([]);
   const [selectedSoftwareCategories, setSelectedSoftwareCategories] = useState([]);
 
@@ -22,7 +21,6 @@ const Form = () => {
     const hardwareCategory = selectedHardwareCategories.join(', ');
     const softwareCategory = selectedSoftwareCategories.join(', ');
     const description = form.description.value;
-    const file = form.attachment.files[0];
     const currentDate = new Date().toISOString();
 
     const formData = {
@@ -33,7 +31,6 @@ const Form = () => {
       softwareCategory,
       description,
       date: currentDate,
-      attachment: file ? file : " ",
       token: newToken
     };
     console.log({ formData });
@@ -75,7 +72,6 @@ const Form = () => {
 
         setToken(newToken);
         form.reset();
-        setSelectedFileName("No file chosen");
       } else {
         setSubmissionMessage(
           "There was an error submitting the form. Please try again."
@@ -128,9 +124,31 @@ const Form = () => {
     return newToken;
   };
 
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
+  
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+    setSelectedHardwareCategories([]); // Clear selected hardware categories on category change
+    setSelectedSoftwareCategories([]); // Clear selected software categories on category change
   };
+
+  const handleHardwareCategoryChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedHardwareCategories([...selectedHardwareCategories, value]);
+    } else {
+      setSelectedHardwareCategories(selectedHardwareCategories.filter((item) => item !== value));
+    }
+  };
+
+  const handleSoftwareCategoryChange = (event) => {
+    const { value, checked } = event.target;
+    if (checked) {
+      setSelectedSoftwareCategories([...selectedSoftwareCategories, value]);
+    } else {
+      setSelectedSoftwareCategories(selectedSoftwareCategories.filter((item) => item !== value));
+    }
+  };
+
 
   // const handleFileChange = (e) => {
   //   const file = e.target.files[0];
@@ -142,7 +160,10 @@ const Form = () => {
   // };
 
   return (
-    <section className="container mx-auto p-12 h-screen flex items-center justify-center flex-nowrap">
+  <div className="">
+
+  
+    <section className="container mx-auto p-12  flex items-center justify-center flex-nowrap">
       <Toaster />
       <div className="sm:mt-8 md:mt-3">
         <div className="flex items-center justify-center mb-8">
@@ -210,6 +231,48 @@ const Form = () => {
                     <option value="Hardware">Hardware</option>
                     <option value="Software">Software</option>
                   </select>
+                  {selectedCategory === "Hardware" && (
+                  <div className="mt-4">
+                    <label className="block text-black/50 text-xs uppercase font-bold mb-2">
+                      Hardware Category
+                    </label>
+                    {hardwareOptions.map((option) => (
+                      <div key={option}>
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={selectedHardwareCategories.includes(option)}
+                            onChange={handleHardwareCategoryChange}
+                            className="mr-2"
+                          />
+                          {option}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedCategory === "Software" && (
+                  <div className="mt-4">
+                    <label className="block text-black/50 text-xs uppercase font-bold mb-2">
+                      Software Category
+                    </label>
+                    {softwareOptions.map((option) => (
+                      <div key={option}>
+                        <label className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value={option}
+                            checked={selectedSoftwareCategories.includes(option)}
+                            onChange={handleSoftwareCategoryChange}
+                            className="mr-2"
+                          />
+                          {option}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
                   {/* Display Hardware component if "Hardware" is selected */}
                   {selectedCategory === "Hardware" && <Hardware />}
@@ -248,10 +311,12 @@ const Form = () => {
          
         </div>
       </div>
-      <div className="">
+      
+    </section>
+    <div className="">
         {/* Display token and reset button if token exists */}
         {token && (
-          <div className="mt-14 bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
+          <div className="my-6   bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
             <div className="col-span-1 border-e-2 border-dashed token-dot"></div>
             <div className="col-span-7 px-4 ps-8 py-4 flex items-center justify-between">
               <div className="">
@@ -269,7 +334,7 @@ const Form = () => {
           </div>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 
