@@ -149,16 +149,6 @@ const Form = () => {
     }
   };
 
-
-  // const handleFileChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setSelectedFileName(file.name);
-  //   } else {
-  //     setSelectedFileName("No file chosen");
-  //   }
-  // };
-
   return (
   <div className="">
 
@@ -173,7 +163,7 @@ const Form = () => {
         <div className="relative">
           <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35  pt-0">
             <div className=" bg-emerald-600 rounded-t-lg">
-              <h1 className="text-xl mb-6 py-4 px-10 text-white">
+              <h1 className="text-xl mb-6 py-6 px-10 text-white">
                 Support Portal
               </h1>
             </div>
