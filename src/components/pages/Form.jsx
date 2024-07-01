@@ -110,6 +110,7 @@ const Form = () => {
     'NEDUBD',
     'BProfile',
     'BAMS',
+    'Others',
   ];
 
   const generateToken = () => {
