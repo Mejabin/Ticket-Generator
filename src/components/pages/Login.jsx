@@ -17,7 +17,9 @@ const Login = () => {
         password,
       });
 
-      if (response.status === 200) {
+      if (response.status === 200) { 
+        console.log(response)  
+        localStorage.setItem("user", JSON.stringify({email: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1AZ21haWwuY29tIn0.HF2-qWH4UnDgeuQ6gLkim71Q8lLq-c3oxuR_leI-dOg"}));
         // Redirect to the support page on successful login
         navigate("/support");
       } else {
@@ -32,7 +34,7 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35 pt-0">
+    <div className="max-w-md mx-auto bg-white rounded-lg shadow-xl shadow-emerald-800/35 p-8 mt-36">
       <div className="bg-emerald-600 rounded-t-lg">
         <h1 className="text-xl mb-6 py-4 px-10 text-white">Support Portal</h1>
       </div>

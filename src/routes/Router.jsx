@@ -3,6 +3,9 @@ import App from "../App";
 import RootLayout from "../components/layouts/RootLayout";
 import Support from "../components/pages/Support";
 import Login from "../components/pages/Login";
+import PrivateRoute from "../components/pages/PrivateRoute";
+
+
 
 const Router = createBrowserRouter([
   {
@@ -13,9 +16,10 @@ const Router = createBrowserRouter([
         path: "/",
         element: <App />,
       },
+      
       {
         path: "/support",
-        element: <Support />,
+        element: <PrivateRoute><Support /></PrivateRoute>  ,
       },
       {
         path: "/login",

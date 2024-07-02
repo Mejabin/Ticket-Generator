@@ -21,7 +21,8 @@ const Support = () => {
 
   // Get method
   useEffect(() => {
-    fetch("https://ticket-generator-server.vercel.app/all-supports")
+    fetch(" https://ticket-generator-server.vercel.app/all-supports")
+   
       .then((res) => res.json())
       .then((data) => {
         setSupports(
