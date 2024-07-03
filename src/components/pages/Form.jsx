@@ -66,7 +66,7 @@ const Form = () => {
                 xmlns="http://www.w3.org/2000/svg"
               ></svg>
             </span>
-            <p className="">{`Thank you! Your data was submitted successfully. Your token number is: ${newToken}`}</p>
+            <p className="">{`Thank you! Your query has been received. Expect a response from us shortly. Your token number is: ${newToken}`}</p>
           </div>
         );
 
@@ -104,6 +104,7 @@ const Form = () => {
     'Conference System',
     'Guarding Beyond Boundaries',
     'Solar System',
+    'Others'
   ];
 
   const softwareOptions = [
@@ -307,7 +308,7 @@ const Form = () => {
     <div className="">
         {/* Display token and reset button if token exists */}
         {token && (
-          <div className="my-6   bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
+          <div className="my-6 bg-white max-w-md mx-auto rounded-lg grid grid-cols-8">
             <div className="col-span-1 border-e-2 border-dashed token-dot"></div>
             <div className="col-span-7 px-4 ps-8 py-4 flex items-center justify-between">
               <div className="">
